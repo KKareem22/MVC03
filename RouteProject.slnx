@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="RouteProject.BLL/RouteProject.BLL.csproj" />
+  <Project Path="RouteProject.DAL/RouteProject.DAL.csproj" />
   <Project Path="RouteProject.PL/RouteProject.PL.csproj" />
 </Solution>

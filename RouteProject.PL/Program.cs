@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using RouteProject.DAL.Data;
+
 namespace RouteProject.PL
 {
     public class Program
@@ -8,6 +11,11 @@ namespace RouteProject.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            // Add DbContext with SQL Server provider
+            builder.Services.AddDbContext<GymDbContext>(op =>
+            {
+                op.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             var app = builder.Build();
 
