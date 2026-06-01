@@ -56,6 +56,8 @@ namespace RouteProject.BLL.Services.Classes
             var plan = await planRepository.GetByIdAsync(id, ct);
             if (plan is null)
                 return null;
+            if (await HasActiveMembership(id,ct))
+                return null;
             else
             {
                 return new PlanToUpdateViewModel
@@ -74,8 +76,7 @@ namespace RouteProject.BLL.Services.Classes
             var plan = await planRepository.GetByIdAsync(id, ct);
             if (plan is null)
                 return false;
-            var HasMembership = await membershipRepository.AnyAsync(m => m.PlanId == id, ct);
-            if (HasMembership)
+            if(await HasActiveMembership(id,ct))
                 return false;
             plan.DurationDays = model.DurationDay;
             plan.Description = model.Description;
@@ -86,5 +87,12 @@ namespace RouteProject.BLL.Services.Classes
             return Result > 0;
 
         }
+
+        #region Helper Method
+        private async Task<bool>HasActiveMembership(int id ,CancellationToken ct)
+        {
+            return await membershipRepository.AnyAsync(m => m.PlanId == id, ct);
+        }
+        #endregion
     }
 }
