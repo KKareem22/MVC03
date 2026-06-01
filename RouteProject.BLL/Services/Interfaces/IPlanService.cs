@@ -8,5 +8,6 @@ namespace RouteProject.BLL.Services.Interfaces
         Task<PlanViewModel?> GetPlanDetailsAsync(int id, CancellationToken ct = default);
         Task<PlanToUpdateViewModel?> GetPlanToUpdateViewModel(int id, CancellationToken ct = default);
         Task<bool> UpdatePlanAsync(int id, PlanToUpdateViewModel model, CancellationToken ct = default);
+        Task<bool>ActivationAsync(int id, CancellationToken ct = default);
     }
 }

@@ -73,6 +73,17 @@ namespace RouteProject.PL.Controllers
                 return View(model);
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult>Activate(int id,CancellationToken ct)
+        {
+            var result = await planService.ActivationAsync(id, ct);
+            if(result)
+                TempData["SuccessMessage"] = "Plan activation status changed successfully.";
+            else
+                TempData["ErrorMessage"] = "Failed to change the plan activation status.";
+            return RedirectToAction(nameof(Index));
+        }
         #endregion
         
     }

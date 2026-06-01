@@ -17,6 +17,20 @@ namespace RouteProject.BLL.Services.Classes
             this.membershipRepository = membershipRepository;
         }
 
+        public async Task<bool> ActivationAsync(int id, CancellationToken ct = default)
+        {
+            var plan=await planRepository.GetByIdAsync(id, ct);
+            if(plan is null)
+                return false;
+            if(plan.IsActive&&await membershipRepository.AnyAsync(m=>m.PlanId==id,ct))
+                return false;
+            plan.IsActive = !plan.IsActive;
+            plan.UpdateAt = DateTime.Now;
+            var result = await planRepository.UpdateAsync(plan, ct);
+            return result > 0;
+
+        }
+
         public async Task<IEnumerable<PlanViewModel>> GetAllAsync(CancellationToken ct)
         {
             var plans = await planRepository.GetAllAsync(ct: ct);
