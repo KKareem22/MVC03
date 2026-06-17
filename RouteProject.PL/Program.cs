@@ -1,3 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using RouteProject.BLL.Services.Classes;
+using RouteProject.BLL.Services.Interfaces;
+using RouteProject.DAL.Data;
+using RouteProject.DAL.Repositories.Classes;
+using RouteProject.DAL.Repositories.Interfaces;
+
 namespace RouteProject.PL
 {
     public class Program
@@ -8,6 +15,18 @@ namespace RouteProject.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            // Add DbContext with SQL Server provider
+            builder.Services.AddDbContext<GymDbContext>(op =>
+            {
+                op.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            /******************************************************************************/
+            //Generic Repository
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            //Services
+            builder.Services.AddScoped<IMemberService, MemberService>();
+            builder.Services.AddScoped<ITrainerService, TrainerService>();
+            builder.Services.AddScoped<IPlanService, PlanService>();
 
             var app = builder.Build();
 
